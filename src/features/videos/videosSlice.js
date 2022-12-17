@@ -35,7 +35,7 @@ const videosSlice = createSlice({
             state.isLoading = false;
             state.videos = [];
             state.isError = true;
-            state.error = action.payload.message;
+            state.error = action.error?.message;
         })
     }
 })

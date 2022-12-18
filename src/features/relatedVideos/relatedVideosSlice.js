@@ -1,41 +1,41 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getTags } from "./tagsAPI";
+import { getReletedVideos } from "./relatedVideosAPI";
 
 // our state 
 const initialState = {
-    tags: [],
+    relatedVideos: [],
     isLoading: false,
     isError: false,
     error: ""
 }
 
 // create thunk 
-export const fetchTags = createAsyncThunk('tags/fetchTags', async()=>{
-    const tags = await getTags();
-    return tags;
+export const fetchReletedVideos = createAsyncThunk('tags/fetchReletedVideos', async({tags, id})=>{
+    const relatedVideos = await getReletedVideos({tags, id});
+    return relatedVideos;
 })
 
 // create slice 
-const tagsSlice = createSlice({
-    name: 'tags',
+const relatedVideosSlice = createSlice({
+    name: 'relatedVideos',
     initialState,
     extraReducers: (builder)=>{
         builder
-        .addCase(fetchTags.pending , (state)=>{
+        .addCase(fetchReletedVideos.pending , (state)=>{
             state.isError = false;
             state.isLoading = true;
         })
-        .addCase(fetchTags.fulfilled, (state, action)=>{
+        .addCase(fetchReletedVideos.fulfilled, (state, action)=>{
             state.isLoading = false;
-            state.tags = action.payload;
+            state.relatedVideos = action.payload;
         })
-        .addCase(fetchTags.rejected, (state, action)=>{
+        .addCase(fetchReletedVideos.rejected, (state, action)=>{
             state.isLoading = false;
-            state.tags = [];
+            state.relatedVideos = [];
             state.isError = true;
             state.error = action.payload.message;
         })
     }
 })
 
-export default tagsSlice.reducer;
+export default relatedVideosSlice.reducer;
